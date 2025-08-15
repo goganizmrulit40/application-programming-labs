@@ -71,6 +71,19 @@ def download_images(keyword, output_dir, max_num):
 
 def create_annotation(output_dir, annotation_file):
     try:
+        if not os.path.exists(annotation_file):
+            os.makedirs(annotation_file, exist_ok=True)
+
+        images = [
+            f for f in os.listdir(output_dir)
+            if os.path.isfile(os.path.join(output_dir, f)) and
+               f.lower().endswith(('.png', '.jpg', '.jpeg'))
+        ]
+
+        if not images:
+            print("Нет изображений для создания аннотации!")
+            return False
+
 
         return True
     except Exception as e:
