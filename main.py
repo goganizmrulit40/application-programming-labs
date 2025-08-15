@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 
 
 def parse_arguments():
@@ -14,6 +15,11 @@ def read_from_file(filename):
     return text
 
 
+def calculate_age(birth_date):
+    today = datetime.now()
+    
+
+
 def count_people_in_age_range(text):
     people = text.split('\n')
     count = 0
@@ -24,7 +30,7 @@ def count_people_in_age_range(text):
             if line.startswith('Дата рождения:'):
                 birth_date = line.split(': ')[1].strip()
                 #print(birth_date)
-
+                age = calculate_age(birth_date)
 
     return count
 
