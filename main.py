@@ -68,3 +68,7 @@ def download_images(keyword, output_dir, max_num):
 
 if __name__ == "__main__":
     args = parse_arguments()
+
+    print(f"Скачивание {args.max_num} изображений"
+          f"по ключевому слову '{args.keyword}'...")
+    download_images(args.keyword, args.output_dir, args.max_num)
