@@ -3,19 +3,33 @@ from datetime import datetime
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser()
+    """
+    Парсит аргументы командной строки
+    :return: str, имя файла, переданное как аргумент командной строки
+    """
+    parser = argparse.ArgumentParser(description='Парсинг текстового файла')
     parser.add_argument('filename', type=str, help='Название текстового файла')
     args = parser.parse_args()
     return args.filename
 
 
 def read_from_file(filename):
+    """
+    Читает содержимое файла
+    :param filename: str, путь к файлу для чтения
+    :return: str, содержимое файла в виде строки
+    """
     with open(filename, 'r', encoding='utf-8') as file:
         text = file.read()
     return text
 
 
 def calculate_age(birth_date):
+    """
+    Вычисляет возраст на основе даты рождения
+    :param birth_date: str, дата рождения в формате 'DD.MM.YYYY'
+    :return: int, возраст в годах
+    """
     today = datetime.now()
     birth_date = datetime.strptime(birth_date, "%d.%m.%Y")
     # print(birth_date)
@@ -26,6 +40,11 @@ def calculate_age(birth_date):
 
 
 def count_people_in_age_range(text):
+    """
+    Подсчитывает количество людей в возрасте от 30 до 40 лет
+    :param text: str, текст с информацией о людях (каждый человек на новой строке)
+    :return: int, кол-во людей, подходящих под описание
+    """
     people = text.split('\n')
     count = 0
 
