@@ -48,5 +48,12 @@ def count_people_in_age_range(text):
 
 if __name__ == "__main__":
     filename = parse_arguments()
-    text = read_from_file(filename)
-    count = count_people_in_age_range(text)
+    try:
+        text = read_from_file(filename)
+        count = count_people_in_age_range(text)
+        print(f"Количество людей в возрасте от 30 до 40 лет: {count}")
+
+    except FileNotFoundError:
+        print(f"Ошибка: файл '{filename}' не найден.")
+    except Exception as e:
+        print(f"Ошибка: {e}")
