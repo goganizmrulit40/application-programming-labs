@@ -44,6 +44,25 @@ def download_images(keyword, output_dir, max_num):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir, exist_ok=True)
 
+    google_crawler = GoogleImageCrawler(
+        storage={'root_dir': output_dir},
+        downloader_threads=4
+    )
+
+    filters = dict(
+        size='large',
+        type='photo',
+        color='color'
+    )
+
+    google_crawler.crawl(
+        keyword=keyword,
+        max_num=max_num,
+        min_size=(200, 200),
+        overwrite=True,
+        filters=filters
+    )
+
 
 
 
