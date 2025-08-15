@@ -1,4 +1,5 @@
 import argparse
+import csv
 import os
 from icrawler.builtin import GoogleImageCrawler
 
@@ -84,6 +85,16 @@ def create_annotation(output_dir, annotation_file):
             print("Нет изображений для создания аннотации!")
             return False
 
+        with open(annotation_file, mode='w', newline='', encoding='utf-8-sig') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Absolute Path", "Relative Path"])
+            for img in images:
+                abs_path = os.path.abspath(os.path.join(output_dir, img))
+                rel_path = os.path.relpath(
+                    abs_path,
+                    start=os.path.dirname(annotation_file)
+                )
+                writer.writerow([abs_path, rel_path])
 
         return True
     except Exception as e:
@@ -94,6 +105,9 @@ def create_annotation(output_dir, annotation_file):
 if __name__ == "__main__":
     args = parse_arguments()
 
-    print(f"Скачивание {args.max_num} изображений"
-          f"по ключевому слову '{args.keyword}'...")
-    download_images(args.keyword, args.output_dir, args.max_num)
+    #print(f"Скачивание {args.max_num} изображений"
+    #      f"по ключевому слову '{args.keyword}'...")
+    #download_images(args.keyword, args.output_dir, args.max_num)
+
+    print(f"Создание аннотации в файле {args.annotation_file}...")
+    create_annotation(args.output_dir, args.annotation_file)
