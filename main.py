@@ -69,6 +69,13 @@ def download_images(keyword, output_dir, max_num):
         return False
 
 
+def create_annotation(output_dir, annotation_file):
+    try:
+
+        return True
+    except Exception as e:
+        print(f"Ошибка при создании аннотации: {str(e)}")
+        return False
 
 
 if __name__ == "__main__":
