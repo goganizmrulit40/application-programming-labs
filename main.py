@@ -32,6 +32,9 @@ def parse_arguments():
 
     args = parser.parse_args()
 
+    if args.max_num < 50 or args.max_num > 1000:
+        raise ValueError("Количество изображений должно быть от 50 до 1000")
+
     return args
 
 
