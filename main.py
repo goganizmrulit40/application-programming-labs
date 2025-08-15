@@ -14,6 +14,22 @@ def read_from_file(filename):
     return text
 
 
+def count_people_in_age_range(text):
+    people = text.split('\n')
+    count = 0
+
+    for person in people:
+        lines = person.split('\n')
+        for line in lines:
+            if line.startswith('Дата рождения:'):
+                birth_date = line.split(': ')[1].strip()
+                #print(birth_date)
+
+
+    return count
+
+
 if __name__ == "__main__":
     filename = parse_arguments()
     text = read_from_file(filename)
+    count = count_people_in_age_range(text)
