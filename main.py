@@ -72,14 +72,15 @@ def download_images(keyword, output_dir, max_num):
 
 def create_annotation(output_dir, annotation_file):
     try:
-        if not os.path.exists(annotation_file):
-            os.makedirs(annotation_file, exist_ok=True)
+        os.makedirs(os.path.dirname(annotation_file) or '.', exist_ok=True)
 
         images = [
             f for f in os.listdir(output_dir)
             if os.path.isfile(os.path.join(output_dir, f)) and
-               f.lower().endswith(('.png', '.jpg', '.jpeg'))
+            f.lower().endswith(('.png', '.jpg', '.jpeg'))
         ]
+
+        #print(images)
 
         if not images:
             print("Нет изображений для создания аннотации!")
@@ -105,9 +106,9 @@ def create_annotation(output_dir, annotation_file):
 if __name__ == "__main__":
     args = parse_arguments()
 
-    #print(f"Скачивание {args.max_num} изображений"
-    #      f"по ключевому слову '{args.keyword}'...")
-    #download_images(args.keyword, args.output_dir, args.max_num)
+    print(f"Скачивание {args.max_num} изображений"
+          f"по ключевому слову '{args.keyword}'...")
+    download_images(args.keyword, args.output_dir, args.max_num)
 
     print(f"Создание аннотации в файле {args.annotation_file}...")
     create_annotation(args.output_dir, args.annotation_file)
