@@ -41,27 +41,32 @@ def parse_arguments():
 
 
 def download_images(keyword, output_dir, max_num):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir, exist_ok=True)
+    try:
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir, exist_ok=True)
 
-    google_crawler = GoogleImageCrawler(
-        storage={'root_dir': output_dir},
-        downloader_threads=4
-    )
+        google_crawler = GoogleImageCrawler(
+            storage={'root_dir': output_dir},
+            downloader_threads=4
+        )
 
-    filters = dict(
-        size='large',
-        type='photo',
-        color='color'
-    )
+        filters = dict(
+            size='large',
+            type='photo',
+            color='color'
+        )
 
-    google_crawler.crawl(
-        keyword=keyword,
-        max_num=max_num,
-        min_size=(200, 200),
-        overwrite=True,
-        filters=filters
-    )
+        google_crawler.crawl(
+            keyword=keyword,
+            max_num=max_num,
+            min_size=(200, 200),
+            overwrite=True,
+            filters=filters
+        )
+        return True
+    except Exception as e:
+        print(f"Ошибка при загрузке изображений: {str(e)}")
+        return False
 
 
 
