@@ -1,4 +1,6 @@
 import argparse
+import os
+from icrawler.builtin import GoogleImageCrawler
 
 
 def parse_arguments():
@@ -36,6 +38,13 @@ def parse_arguments():
         raise ValueError("Количество изображений должно быть от 50 до 1000")
 
     return args
+
+
+def download_images(keyword, output_dir, max_num):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
+
+
 
 
 if __name__ == "__main__":
