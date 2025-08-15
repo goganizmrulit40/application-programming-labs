@@ -35,7 +35,13 @@ def count_people_in_age_range(text):
             if line.startswith('Дата рождения:'):
                 birth_date = line.split(': ')[1].strip()
                 #print(birth_date)
-                age = calculate_age(birth_date)
+                try:
+                    age = calculate_age(birth_date)
+                    if 30 <= age <= 40:
+                        count += 1
+                except ValueError:
+                    continue
+                break
 
     return count
 
