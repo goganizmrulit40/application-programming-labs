@@ -17,7 +17,12 @@ def read_from_file(filename):
 
 def calculate_age(birth_date):
     today = datetime.now()
-    
+    birth_date = datetime.strptime(birth_date, "%d.%m.%Y")
+    # print(birth_date)
+    age = today.year - birth_date.year
+    if (today.month, today.day) < (birth_date.month, birth_date.day):
+        age -= 1
+    return age
 
 
 def count_people_in_age_range(text):
