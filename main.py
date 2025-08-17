@@ -6,7 +6,20 @@ from icrawler.builtin import GoogleImageCrawler
 
 
 class ImageIterator:
+    """
+    Итератор для перебора изображений из файла аннотации или папки.
+
+    Позволяет получать пути к изображениям из:
+    - CSV файла аннотации (берет пути из второго столбца)
+    - Указанной директории (ищет файлы .png, .jpg, .jpeg)
+    """
     def __init__(self, annotation_file=None, folder_path=None):
+        """
+        Инициализирует итератор.
+        :param annotation_file: str, опциональный аргумент, путь к CSV файлу аннотации.
+                                Должен содержать относительные пути во втором столбце.
+        :param folder_path: str, опциональный аргумент, путь к папке с изображениями
+        """
         try:
             if annotation_file:
                 self.images = []
@@ -39,9 +52,15 @@ class ImageIterator:
             sys.exit(1)
 
     def __iter__(self):
+        """
+        :return: возвращает сам объект как итератор
+        """
         return self
 
     def __next__(self):
+        """
+        :return: возвращает следующий путь к изображению
+        """
         if self.counter < len(self.images):
             image_path = self.images[self.counter]
             self.counter += 1
@@ -49,7 +68,12 @@ class ImageIterator:
         else:
             raise StopIteration
 
+
 def parse_arguments():
+    """
+    Парсит аргументы командной строки
+    :return: объект с распарсенными аргументами
+    """
     parser = argparse.ArgumentParser(
         description='Скачивание изображений и создание аннотации'
     )
@@ -87,6 +111,13 @@ def parse_arguments():
 
 
 def download_images(keyword, output_dir, max_num):
+    """
+    Скачивает изображения с Google Images по ключевому слову
+    :param keyword: str, ключевое слово для поиска изображений
+    :param output_dir: str, директория для сохранения изображений
+    :param max_num: int, максимальное количество изображений для загрузки
+    :return: bool, True если загрузка прошла успешно, False при ошибке
+    """
     try:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
@@ -117,6 +148,12 @@ def download_images(keyword, output_dir, max_num):
 
 
 def create_annotation(output_dir, annotation_file):
+    """
+    Создает CSV файл аннотации с путями к изображениям
+    :param output_dir: str, директория с изображениями
+    :param annotation_file: str, путь к создаваемому CSV файлу
+    :return: bool, True если аннотация создана успешно, False при ошибке
+    """
     try:
         os.makedirs(os.path.dirname(annotation_file) or '.', exist_ok=True)
 
