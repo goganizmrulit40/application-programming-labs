@@ -149,11 +149,18 @@ def create_annotation(output_dir, annotation_file):
 
 
 if __name__ == "__main__":
-    args = parse_arguments()
+    try:
+        args = parse_arguments()
 
-    print(f"Скачивание {args.max_num} изображений"
-          f"по ключевому слову '{args.keyword}'...")
-    download_images(args.keyword, args.output_dir, args.max_num)
+        print(f"Скачивание {args.max_num} изображений"
+              f"по ключевому слову '{args.keyword}'...")
+        if not download_images(args.keyword, args.output_dir, args.max_num):
+            sys.exit(1)
 
-    print(f"Создание аннотации в файле {args.annotation_file}...")
-    create_annotation(args.output_dir, args.annotation_file)
+        print(f"Создание аннотации в файле {args.annotation_file}...")
+        if not create_annotation(args.output_dir, args.annotation_file):
+            sys.exit(1)
+
+    except Exception as e:
+        print(f"Произошла ошибка: {str(e)}")
+        sys.exit(1)
