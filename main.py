@@ -8,7 +8,32 @@ from icrawler.builtin import GoogleImageCrawler
 class ImageIterator:
     def __init__(self, annotation_file=None, folder_path=None):
         try:
-            self.counter = 0
+            if annotation_file:
+                self.images = []
+                with open(annotation_file, mode='r',
+                          encoding='utf-8-sig') as file:
+                    reader = csv.reader(file)
+                    next(reader, None)
+
+                    for row in reader:
+                        if len(row) > 1:
+                            self.images.append(row[1])
+                self.counter = 0
+
+            elif folder_path:
+                self.images = [
+                    os.path.join(folder_path, f)
+                    for f in os.listdir(folder_path)
+                    if os.path.isfile(os.path.join(folder_path, f)) and
+                    f.lower().endswith(('.png', '.jpg', '.jpeg'))
+                ]
+                self.counter = 0
+
+            else:
+                raise ValueError(
+                    "Необходимо указать либо файл аннотации, либо путь к папке"
+                )
+
         except Exception as e:
             print(f"Ошибка при инициализации итератора: {str(e)}")
             sys.exit(1)
