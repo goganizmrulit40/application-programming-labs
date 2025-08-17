@@ -1,8 +1,27 @@
 import argparse
 import csv
 import os
+import sys
 from icrawler.builtin import GoogleImageCrawler
 
+
+class ImageIterator:
+    def __init__(self, annotation_file=None, folder_path=None):
+        try:
+            self.counter = 0
+        except Exception as e:
+            print(f"Ошибка при инициализации итератора: {str(e)}")
+            sys.exit(1)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.counter < self.limit:
+            self.counter += 1
+            return 1
+        else:
+            raise StopIteration
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
