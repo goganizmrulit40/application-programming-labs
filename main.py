@@ -42,9 +42,10 @@ class ImageIterator:
         return self
 
     def __next__(self):
-        if self.counter < self.limit:
+        if self.counter < len(self.images):
+            image_path = self.images[self.counter]
             self.counter += 1
-            return 1
+            return image_path
         else:
             raise StopIteration
 
