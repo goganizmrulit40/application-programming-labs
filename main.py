@@ -110,6 +110,7 @@ def download_images(keyword, output_dir, max_num):
             filters=filters
         )
         return True
+
     except Exception as e:
         print(f"Ошибка при загрузке изображений: {str(e)}")
         return False
@@ -143,6 +144,7 @@ def create_annotation(output_dir, annotation_file):
                 writer.writerow([abs_path, rel_path])
 
         return True
+
     except Exception as e:
         print(f"Ошибка при создании аннотации: {str(e)}")
         return False
@@ -160,6 +162,22 @@ if __name__ == "__main__":
         print(f"Создание аннотации в файле {args.annotation_file}...")
         if not create_annotation(args.output_dir, args.annotation_file):
             sys.exit(1)
+
+        print("\nДемонстрация работы итератора "
+              "(первые 5 изображений из файла аннотации):")
+        iterator = ImageIterator(annotation_file=args.annotation_file)
+        for i, img_path in enumerate(iterator):
+            print(f"{i + 1}. {img_path}")
+            if i >= 4:
+                break
+
+        print("\nДемонстрация работы итератора "
+              "(первые 5 изображений из папки):")
+        iterator = ImageIterator(folder_path=args.output_dir)
+        for i, img_path in enumerate(iterator):
+            print(f"{i + 1}. {img_path}")
+            if i >= 4:
+                break
 
     except Exception as e:
         print(f"Произошла ошибка: {str(e)}")
