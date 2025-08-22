@@ -29,12 +29,29 @@ def load_image(image_path):
     return image
 
 
+def print_image_info(image):
+    """
+    Выводит информацию о размере изображения
+    :param image: массив NumPy, входное изображение
+    :return: кортеж с информацией об изображении:
+            - width (int): ширина изображения в пикселях
+            - height (int): высота изображения в пикселях
+    """
+    height, width = image.shape[:2]
+    print(f"Размер изображения: {width}x{height} пикселей")
+    return width, height
+
+
+
 if __name__ == "__main__":
     try:
         args = parse_arguments()
 
         print("Загрузка изображения...")
         image = load_image(args.input_image)
+
+        print("\nИнформация об изображении:")
+        print_image_info(image)
 
     except Exception as e:
         print(f"Ошибка: {e}")
