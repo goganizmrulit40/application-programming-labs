@@ -48,6 +48,24 @@ def print_image_info(image):
 
 
 def building_color_histogram(image):
+    colors = ('b', 'g', 'r')
+    channel_names = ('Синий', 'Зеленый', 'Красный')
+
+    plt.figure(figsize=(10, 5))
+    for i, color in enumerate(colors):
+        hist = cv2.calcHist([image], [i], None, [256], [0, 256])
+        plt.plot(hist, color=color, label=channel_names[i], alpha=0.7)
+
+    plt.title('Гистограмма цветов изображения')
+    plt.xlabel('Значение пикселя')
+    plt.ylabel('Частота')
+    plt.axhline(0, color='black', linewidth=0.5, ls='--')
+    plt.axvline(0, color='black', linewidth=0.5, ls='--')
+    plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.3)
+    plt.legend()
+
+    plt.show()
+    print("Успешное построение гистограммы!")
     return
 
 
