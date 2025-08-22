@@ -2,6 +2,8 @@ import argparse
 import sys
 
 import cv2
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def parse_arguments():
@@ -36,11 +38,17 @@ def print_image_info(image):
     :return: кортеж с информацией об изображении:
             - width (int): ширина изображения в пикселях
             - height (int): высота изображения в пикселях
+            - channels (int): количество цветовых каналов
     """
     height, width = image.shape[:2]
+    channels = image.shape[2] if len(image.shape) == 3 else 1
     print(f"Размер изображения: {width}x{height} пикселей")
-    return width, height
+    print(f"Количество каналов: {channels}")
+    return width, height, channels
 
+
+def building_color_histogram(image):
+    return
 
 
 if __name__ == "__main__":
@@ -52,6 +60,9 @@ if __name__ == "__main__":
 
         print("\nИнформация об изображении:")
         print_image_info(image)
+
+        print("\nПостроение гистограммы...")
+        building_color_histogram(image)
 
     except Exception as e:
         print(f"Ошибка: {e}")
