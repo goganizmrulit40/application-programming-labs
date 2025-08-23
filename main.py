@@ -14,17 +14,25 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='Обработка изображения')
     parser.add_argument('input_image', help='Путь к входному изображению')
     parser.add_argument('output_image', help='Путь для сохранения результата')
+    parser.add_argument(
+        '--grayscale',
+        action='store_true',
+        help='Принудительная загрузка в оттенках серого'
+    )
 
     return parser.parse_args()
 
 
-def load_image(image_path):
+def load_image(image_path, grayscale=False):
     """
     Загружает изображение из файла с помощью OpenCV
     :param image_path: str, путь к файлу изображения
     :return: массив NumPy с данными изображения в формате BGR
     """
-    image = cv2.imread(image_path)
+    if grayscale:
+        image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    else:
+        image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     print("Успешная загрузка!")
     if image is None:
         raise ValueError(f"Не удалось загрузить изображение: {image_path}")
@@ -54,16 +62,27 @@ def building_color_histogram(image):
     :return: Гистограмма показывает распределение значений пикселей
             по каждому из цветовых каналов (синий, зеленый, красный)
     """
-    colors = ('b', 'g', 'r')
-    channel_names = ('Синий', 'Зеленый', 'Красный')
 
-    plt.figure(figsize=(10, 5))
-    for i, color in enumerate(colors):
-        hist = cv2.calcHist([image], [i], None, [256], [0, 256])
-        plt.plot(hist, color=color, label=channel_names[i], alpha=0.7)
+    if len(image.shape) == 2 or image.shape[2] == 1:
+        plt.figure(figsize=(10, 5))
+        hist = cv2.calcHist([image], [0], None, [256], [0, 256])
+        plt.plot(hist, color='black', label='Яркость', alpha=0.7, linewidth=2)
 
-    plt.title('Гистограмма цветов изображения')
-    plt.xlabel('Значение пикселя')
+        plt.title('Гистограмма яркости (черно-белое изображение)')
+        plt.xlabel('Значение пикселя (яркость)')
+
+    else:
+        colors = ('b', 'g', 'r')
+        channel_names = ('Синий', 'Зеленый', 'Красный')
+
+        plt.figure(figsize=(10, 5))
+        for i, color in enumerate(colors):
+            hist = cv2.calcHist([image], [i], None, [256], [0, 256])
+            plt.plot(hist, color=color, label=channel_names[i], alpha=0.7)
+
+        plt.title('Гистограмма цветов изображения')
+        plt.xlabel('Значение пикселя')
+
     plt.ylabel('Частота')
     plt.axhline(0, color='black', linewidth=0.5, ls='--')
     plt.axvline(0, color='black', linewidth=0.5, ls='--')
@@ -101,7 +120,7 @@ if __name__ == "__main__":
         args = parse_arguments()
 
         print("Загрузка изображения...")
-        image = load_image(args.input_image)
+        image = load_image(args.input_image, args.grayscale)
 
         print("\nИнформация об изображении:")
         print_image_info(image)
