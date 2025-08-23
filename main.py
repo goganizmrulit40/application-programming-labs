@@ -27,7 +27,8 @@ def load_image(image_path, grayscale=False):
     """
     Загружает изображение из файла с помощью OpenCV
     :param image_path: str, путь к файлу изображения
-    :return: массив NumPy с данными изображения в формате BGR
+    :param grayscale: bool, загрузка в оттенках серого
+    :return: массив NumPy с данными изображения
     """
     if grayscale:
         image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
@@ -58,9 +59,10 @@ def print_image_info(image):
 def building_color_histogram(image):
     """
     Строит и отображает цветную гистограмму для изображения
-    :param image: массив NumPy, входное изображение в формате BGR
+    :param image: массив NumPy, входное изображение
     :return: Гистограмма показывает распределение значений пикселей
             по каждому из цветовых каналов (синий, зеленый, красный)
+            или по яркости пикселя в случае черно-белого изображения
     """
 
     if len(image.shape) == 2 or image.shape[2] == 1:
@@ -100,7 +102,8 @@ def display_image(image, title):
     :param image: массив NumPy, входное изображение
     :param title: str, заголовок для отображения
     :return: конвертирует из BGR (OpenCV) в RGB (matplotlib)
-            для корректного отображения цветов
+            для корректного отображения цветов,
+            или отображает в оттенках серого
     """
     plt.figure(figsize=(10, 5))
 
