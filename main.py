@@ -11,9 +11,15 @@ def parse_arguments():
     Парсит аргументы командной строки
     :return: объект с распарсенными аргументами
     """
-    parser = argparse.ArgumentParser(description='Обработка изображения')
+    parser = argparse.ArgumentParser(
+        description='Обработка изображения: гистограмма, размер и стыковка'
+    )
     parser.add_argument('input_image', help='Путь к входному изображению')
     parser.add_argument('output_image', help='Путь для сохранения результата')
+    parser.add_argument(
+        '--second_image',
+        help='Путь ко второму изображению для стыковки (опционально)'
+    )
     parser.add_argument(
         '--grayscale',
         action='store_true',
@@ -118,6 +124,23 @@ def display_image(image, title):
     plt.show()
 
 
+def stitch_images(image1, image2):
+    """
+    Состыкует два изображения горизонтально с сохранением пропорций
+    :param image1: массив NumPy, первое изображение (базовое)
+    :param image2: массив NumPy, второе изображение (масштабируется к первому)
+    :return: массив NumPy, результирующее изображение, состоящее из двух состыкованных
+    """
+    h1, w1 = image1.shape[:2]
+    h2, w2 = image2.shape[:2]
+
+    scale_factor = h1 / h2
+    new_width = int(w2 * scale_factor)
+    image2_resized = cv2.resize(image2, (new_width, h1))
+
+    return np.hstack((image1, image2_resized))
+
+
 if __name__ == "__main__":
     try:
         args = parse_arguments()
@@ -134,6 +157,12 @@ if __name__ == "__main__":
         print("Отображение исходного изображения...")
         display_image(image, 'Исходное изображение')
 
+        print("Состыковка изображений...")
+        second_image = load_image(args.second_image)
+        stitched_image = stitch_images(image, second_image)
+        result_title = 'Состыкованное изображение'
+
+        display_image(stitched_image, result_title)
 
     except Exception as e:
         print(f"Ошибка: {e}")
