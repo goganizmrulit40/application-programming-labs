@@ -99,7 +99,6 @@ def building_color_histogram(image):
 
     plt.show()
     print("Успешное построение гистограммы!")
-    return
 
 
 def display_image(image, title):
@@ -122,6 +121,8 @@ def display_image(image, title):
     plt.title(title)
     plt.axis('off')
     plt.show()
+
+    print("Успешное отображение изображения!")
 
 
 def stitch_images(image1, image2):
@@ -175,10 +176,10 @@ if __name__ == "__main__":
         print("\nПостроение гистограммы...")
         building_color_histogram(image)
 
-        print("Отображение исходного изображения...")
+        print("\nОтображение исходного изображения...")
         display_image(image, 'Исходное изображение')
 
-        print("Состыковка изображений...")
+        print("\nСостыковка изображений...")
         if args.second_image:
             second_image = load_image(args.second_image)
             stitched_image = stitch_images(image, second_image)
@@ -188,8 +189,10 @@ if __name__ == "__main__":
             stitched_image = stitch_images(image, mirrored_image)
             result_title = 'Стыкованное изображение (исходное + зеркальное)'
 
+        print("\nОтображение результативного изображения...")
         display_image(stitched_image, result_title)
 
+        print("\nСохранение результативного изображения...")
         save_image(stitched_image, args.output_image)
 
         print("\nОбработка завершена успешно!")
