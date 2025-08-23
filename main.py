@@ -141,6 +141,15 @@ def stitch_images(image1, image2):
     return np.hstack((image1, image2_resized))
 
 
+def create_mirrored_image(image):
+    """
+    Создает зеркальное отражение изображения
+    :param image: массив NumPy, входное изображение
+    :return: массив NumPy, зеркально отраженное изображение
+    """
+    return cv2.flip(image, 1)
+
+
 if __name__ == "__main__":
     try:
         args = parse_arguments()
@@ -158,9 +167,14 @@ if __name__ == "__main__":
         display_image(image, 'Исходное изображение')
 
         print("Состыковка изображений...")
-        second_image = load_image(args.second_image)
-        stitched_image = stitch_images(image, second_image)
-        result_title = 'Состыкованное изображение'
+        if args.second_image:
+            second_image = load_image(args.second_image)
+            stitched_image = stitch_images(image, second_image)
+            result_title = 'Состыкованное изображение'
+        else:
+            mirrored_image = create_mirrored_image(image)
+            stitched_image = stitch_images(image, mirrored_image)
+            result_title = 'Стыкованное изображение (исходное + зеркальное)'
 
         display_image(stitched_image, result_title)
 
