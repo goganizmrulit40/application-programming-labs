@@ -75,6 +75,27 @@ def building_color_histogram(image):
     return
 
 
+def display_image(image, title):
+    """
+    Отображает изображение с заголовком с помощью matplotlib
+    :param image: массив NumPy, входное изображение
+    :param title: str, заголовок для отображения
+    :return: конвертирует из BGR (OpenCV) в RGB (matplotlib)
+            для корректного отображения цветов
+    """
+    plt.figure(figsize=(10, 5))
+
+    if len(image.shape) == 3:
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        plt.imshow(image_rgb)
+    else:
+        plt.imshow(image, cmap='gray')
+
+    plt.title(title)
+    plt.axis('off')
+    plt.show()
+
+
 if __name__ == "__main__":
     try:
         args = parse_arguments()
@@ -87,6 +108,10 @@ if __name__ == "__main__":
 
         print("\nПостроение гистограммы...")
         building_color_histogram(image)
+
+        print("Отображение исходного изображения...")
+        display_image(image, 'Исходное изображение')
+
 
     except Exception as e:
         print(f"Ошибка: {e}")
