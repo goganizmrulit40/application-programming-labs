@@ -150,6 +150,18 @@ def create_mirrored_image(image):
     return cv2.flip(image, 1)
 
 
+def save_image(image, output_path):
+    """
+    Сохраняет изображение в файл с помощью OpenCV
+    :param image: массив NumPy, изображение для сохранения
+    :param output_path: str, путь для сохранения файла
+    """
+    success = cv2.imwrite(output_path, image)
+    if not success:
+        raise ValueError(f"Не удалось сохранить изображение: {output_path}")
+    print(f"Изображение успешно сохранено: {output_path}")
+
+
 if __name__ == "__main__":
     try:
         args = parse_arguments()
@@ -177,6 +189,10 @@ if __name__ == "__main__":
             result_title = 'Стыкованное изображение (исходное + зеркальное)'
 
         display_image(stitched_image, result_title)
+
+        save_image(stitched_image, args.output_image)
+
+        print("\nОбработка завершена успешно!")
 
     except Exception as e:
         print(f"Ошибка: {e}")
