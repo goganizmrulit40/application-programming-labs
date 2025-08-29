@@ -1,4 +1,5 @@
 import pandas as pd
+import cv2
 import argparse
 import sys
 
@@ -72,6 +73,27 @@ def get_image_dimensions(image_path):
         return None, None, None
 
 
+def add_dimensions_columns(df):
+    """
+    Добавляет в DataFrame колонки с размерами изображений
+    :param df: pandas.DataFrame, исходный DataFrame с путями к изображениям
+    :return: pandas.DataFrame,
+                модифицированный DataFrame
+                с колонками 'height', 'width', 'channels'
+    """
+    dimensions = []
+
+    for abs_path in df['absolute_path']:
+        height, width, channels = get_image_dimensions(abs_path)
+        dimensions.append((height, width, channels))
+
+    df['height'] = [d[0] for d in dimensions]
+    df['width'] = [d[1] for d in dimensions]
+    df['channels'] = [d[2] for d in dimensions]
+
+    return df
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -84,6 +106,8 @@ if __name__ == "__main__":
     display_dataframe_info(df, "исходном DataFrame")
 
     print("\n2. Добавление информации о размерах изображений...")
+    df = add_dimensions_columns(df)
+    display_dataframe_info(df, "DataFrame с размерами")
 
 
 
