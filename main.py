@@ -118,12 +118,32 @@ def calculate_statistics(df):
     print(f"\nКаналы:\n{df['channels'].describe()}")
 
 
+def filter_by_max_size(df, max_width, max_height):
+    """
+    Фильтрует DataFrame по максимальным размерам изображения
+    :param df: pandas.DataFrame, DataFrame с колонками 'width' и 'height'
+    :param max_width: int, максимально допустимая ширина изображения
+    :param max_height: int, максимально допустимая высота изображения
+    :return: pandas.DataFrame, отфильтрованный DataFrame с изображениями,
+             удовлетворяющими условиям
+    """
+    mask = (df['width'] <= max_width) & (df['height'] <= max_height)
+    df_filtered = df[mask].copy()
+
+    df.drop(df.index, inplace=True)
+    df = pd.concat([df, df_filtered], ignore_index=True)
+
+    return df
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
     print(f"Входной файл: {args.input}")
 
     input_file = args.input
+    max_width = args.max_width
+    max_height = args.max_height
 
     print("1. Загрузка и переименование данных...")
     df = load_and_rename_data(input_file)
@@ -135,6 +155,10 @@ if __name__ == "__main__":
 
     print("\n3. Вычисление статистики...")
     calculate_statistics(df)
+
+    print(f"\n4. Фильтрация по максимальным размерам ({max_width}x{max_height})...")
+    df = filter_by_max_size(df, max_width, max_height)
+    display_dataframe_info(df, "отфильтрованном DataFrame")
 
 
 
