@@ -1,5 +1,6 @@
 import pandas as pd
 import cv2
+import matplotlib.pyplot as plt
 import argparse
 import sys
 
@@ -162,6 +163,24 @@ def sort_by_area(df):
     return df.sort_values('area', ascending=True)
 
 
+def plot_area_histogram(df):
+    """
+    Создает и отображает гистограмму распределения площадей изображений
+    :param df: pandas.DataFrame, DataFrame с колонкой 'area'
+    """
+    plt.figure(figsize=(12, 8))
+    plt.hist(df['area'], bins=20, alpha=0.7, color='skyblue', edgecolor='black')
+
+    plt.title('Распределение площадей изображений', fontsize=16, fontweight='bold')
+    plt.xlabel('Площадь изображения (пиксели)', fontsize=12)
+    plt.ylabel('Количество изображений', fontsize=12)
+
+    plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.3)
+
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -194,6 +213,8 @@ if __name__ == "__main__":
     df = sort_by_area(df)
     display_dataframe_info(df, "отсортированном DataFrame")
 
+    print("\n7. Создание гистограммы...")
+    plot_area_histogram(df)
 
 
 
