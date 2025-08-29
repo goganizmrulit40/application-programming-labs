@@ -153,6 +153,15 @@ def add_area_column(df):
     return df
 
 
+def sort_by_area(df):
+    """
+    Сортирует DataFrame по площади изображения в возрастающем порядке
+    :param df: pandas.DataFrame, DataFrame с колонкой 'area'
+    :return: pandas.DataFrame, отсортированный DataFrame
+    """
+    return df.sort_values('area', ascending=True)
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -181,6 +190,9 @@ if __name__ == "__main__":
     df = add_area_column(df)
     display_dataframe_info(df, "DataFrame с площадью")
 
+    print("\n6. Сортировка по площади...")
+    df = sort_by_area(df)
+    display_dataframe_info(df, "отсортированном DataFrame")
 
 
 
