@@ -38,6 +38,22 @@ def load_and_rename_data(file_path):
         sys.exit(1)
 
 
+def display_dataframe_info(df, name="DataFrame"):
+    """
+    Отображает основную информацию о DataFrame
+    :param df: pandas.DataFrame, DataFrame для анализа
+    :param name: str, название DataFrame для вывода в сообщениях
+    """
+    print(f"\nИнформация о {name}:")
+    print(f"Количество строк: {len(df)}")
+    print(f"Количество столбцов: {len(df.columns)}")
+    print(f"Столбцы: {list(df.columns)}")
+
+    print(f"\nПервые 5 строк:")
+    if not df.empty:
+        print(df.head())
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -47,6 +63,7 @@ if __name__ == "__main__":
 
     print("1. Загрузка и переименование данных...")
     df = load_and_rename_data(input_file)
+    display_dataframe_info(df, "исходном DataFrame")
 
 
 
