@@ -143,6 +143,16 @@ def filter_by_max_size(df, max_width, max_height):
     return df
 
 
+def add_area_column(df):
+    """
+    Добавляет колонку с площадью изображения
+    :param df: pandas.DataFrame, DataFrame с колонками 'width' и 'height'
+    :return: pandas.DataFrame, DataFrame с добавленной колонкой 'area'
+    """
+    df['area'] = df['width'] * df['height']
+    return df
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -167,6 +177,9 @@ if __name__ == "__main__":
     df = filter_by_max_size(df, max_width, max_height)
     display_dataframe_info(df, "отфильтрованном DataFrame")
 
+    print("\n5. Добавление столбца с площадью...")
+    df = add_area_column(df)
+    display_dataframe_info(df, "DataFrame с площадью")
 
 
 
