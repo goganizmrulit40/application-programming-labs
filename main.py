@@ -25,10 +25,17 @@ def load_and_rename_data(file_path):
     :param file_path: str, путь к CSV файлу с данными об изображениях
     :return: pandas.DataFrame, DataFrame с колонками 'absolute_path' и 'relative_path'
     """
-    df = pd.read_csv(file_path)
-    df.columns = ['absolute_path', 'relative_path']
-    print(f"Успешно загружено {len(df)} записей из {file_path}")
-    return df
+    try:
+        df = pd.read_csv(file_path)
+        df.columns = ['absolute_path', 'relative_path']
+        print(f"Успешно загружено {len(df)} записей из {file_path}")
+        return df
+    except FileNotFoundError:
+        print(f"Ошибка: Файл {file_path} не найден")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Ошибка при чтении файла: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
