@@ -60,9 +60,16 @@ def get_image_dimensions(image_path):
     :param image_path: str, абсолютный путь к файлу изображения
     :return: кортеж (height, width, channels)
     """
-    image = cv2.imread(image_path)
-    height, width, channels = image.shape
-    return height, width, channels
+    try:
+        image = cv2.imread(image_path)
+        if image is None:
+            print(f"Предупреждение: Не удалось прочитать изображение {image_path}")
+            return None, None, None
+        height, width, channels = image.shape
+        return height, width, channels
+    except Exception as e:
+        print(f"Ошибка при чтении изображения {image_path}: {e}")
+        return None, None, None
 
 
 if __name__ == "__main__":
