@@ -127,12 +127,19 @@ def filter_by_max_size(df, max_width, max_height):
     :return: pandas.DataFrame, отфильтрованный DataFrame с изображениями,
              удовлетворяющими условиям
     """
+    if max_width <= 0 or max_height <= 0:
+        print("Предупреждение: Максимальные размеры должны быть положительными числами")
+        return df
+
+    original_count = len(df)
+
     mask = (df['width'] <= max_width) & (df['height'] <= max_height)
     df_filtered = df[mask].copy()
 
     df.drop(df.index, inplace=True)
     df = pd.concat([df, df_filtered], ignore_index=True)
 
+    print(f"\nОтфильтровано изображений: {len(df)} из {original_count}")
     return df
 
 
