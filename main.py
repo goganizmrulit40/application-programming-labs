@@ -16,6 +16,10 @@ def parse_arguments():
 
     parser.add_argument('-o', '--output', default='processed_image_data.csv',
                         help='Выходной CSV файл (по умолчанию: processed_image_data.csv)')
+    parser.add_argument('--max-width', type=int, default=10000,
+                        help='Максимальная ширина для фильтрации (по умолчанию: 10000)')
+    parser.add_argument('--max-height', type=int, default=10000,
+                        help='Максимальная высота для фильтрации (по умолчанию: 10000)')
 
     return parser.parse_args()
 
