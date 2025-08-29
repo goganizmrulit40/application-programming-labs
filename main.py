@@ -189,7 +189,11 @@ def save_processed_data(df, output_file):
     :param df: pandas.DataFrame, DataFrame для сохранения
     :param output_file: str, путь к выходному CSV файлу
     """
-    df.to_csv(output_file, index=False)
+    try:
+        df.to_csv(output_file, index=False)
+        print(f"Обработанные данные сохранены в файл: {output_file}")
+    except Exception as e:
+        print(f"Ошибка при сохранении файла: {e}")
 
 
 if __name__ == "__main__":
