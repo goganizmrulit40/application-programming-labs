@@ -102,6 +102,18 @@ def add_dimensions_columns(df):
     return df
 
 
+def calculate_statistics(df):
+    """
+    Вычисляет и выводит статистическую информацию о размерах изображений
+    :param df: pandas.DataFrame,
+                DataFrame с колонками 'height', 'width', 'channels'
+    """
+    print("Статистическая информация о размерах изображений:")
+    print(f"Высота:\n{df['height'].describe()}")
+    print(f"\nШирина:\n{df['width'].describe()}")
+    print(f"\nКаналы:\n{df['channels'].describe()}")
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -116,6 +128,9 @@ if __name__ == "__main__":
     print("\n2. Добавление информации о размерах изображений...")
     df = add_dimensions_columns(df)
     display_dataframe_info(df, "DataFrame с размерами")
+
+    print("\n3. Вычисление статистики...")
+    calculate_statistics(df)
 
 
 
