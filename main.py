@@ -183,12 +183,22 @@ def plot_area_histogram(df):
     plt.show()
 
 
+def save_processed_data(df, output_file):
+    """
+    Сохраняет обработанные данные в CSV файл
+    :param df: pandas.DataFrame, DataFrame для сохранения
+    :param output_file: str, путь к выходному CSV файлу
+    """
+    df.to_csv(output_file, index=False)
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
     print(f"Входной файл: {args.input}")
 
     input_file = args.input
+    output_file = args.output
     max_width = args.max_width
     max_height = args.max_height
 
@@ -218,6 +228,7 @@ if __name__ == "__main__":
     print("\n7. Создание гистограммы...")
     plot_area_histogram(df)
 
+    print("\n8. Сохранение результатов...")
+    save_processed_data(df, output_file)
 
-
-
+    print("\nОбработка завершена успешно!")
