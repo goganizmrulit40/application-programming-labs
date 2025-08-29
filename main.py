@@ -10,7 +10,9 @@ def parse_arguments():
     Парсинг аргументов командной строки
     :return: объект с распарсенными аргументами
     """
-    parser = argparse.ArgumentParser(description='Обработка данных изображений')
+    parser = argparse.ArgumentParser(
+        description='Обработка данных изображений анализ размеров, фильтрация и визуализация'
+    )
 
     parser.add_argument('-i', '--input', required=True,
                         help='Входной CSV файл с путями к изображениям')
