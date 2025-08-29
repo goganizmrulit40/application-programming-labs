@@ -54,6 +54,17 @@ def display_dataframe_info(df, name="DataFrame"):
         print(df.head())
 
 
+def get_image_dimensions(image_path):
+    """
+    Получает размеры изображения (высоту, ширину и количество каналов)
+    :param image_path: str, абсолютный путь к файлу изображения
+    :return: кортеж (height, width, channels)
+    """
+    image = cv2.imread(image_path)
+    height, width, channels = image.shape
+    return height, width, channels
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -65,6 +76,7 @@ if __name__ == "__main__":
     df = load_and_rename_data(input_file)
     display_dataframe_info(df, "исходном DataFrame")
 
+    print("\n2. Добавление информации о размерах изображений...")
 
 
 
