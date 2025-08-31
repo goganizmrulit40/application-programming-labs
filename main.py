@@ -86,12 +86,23 @@ def get_image_dimensions(image_path):
     :return: кортеж (height, width, channels)
     """
     try:
+        if not os.path.exists(image_path):
+            print(f"Предупреждение: Файл {image_path} не существует")
+            return None, None, None
+        if not os.path.isfile(image_path):
+            print(f"Предупреждение: {image_path} не является файлом")
+            return None, None, None
+
         image = cv2.imread(image_path)
         if image is None:
             print(f"Предупреждение: Не удалось прочитать изображение {image_path}")
             return None, None, None
         height, width, channels = image.shape
         return height, width, channels
+
+    except cv2.error as e:
+        print(f"Ошибка OpenCV при чтении изображения {image_path}: {e}")
+        return None, None, None
     except Exception as e:
         print(f"Ошибка при чтении изображения {image_path}: {e}")
         return None, None, None
