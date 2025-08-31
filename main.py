@@ -171,6 +171,9 @@ def filter_by_max_size(df, max_width, max_height):
     :return: pandas.DataFrame, отфильтрованный DataFrame с изображениями,
              удовлетворяющими условиям
     """
+    if 'width' not in df.columns or 'height' not in df.columns:
+        raise ValueError("DataFrame должен содержать колонки 'width' и 'height'")
+
     if max_width <= 0 or max_height <= 0:
         print("Предупреждение: Максимальные размеры должны быть положительными числами")
         return df
