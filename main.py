@@ -3,6 +3,7 @@ import cv2
 import matplotlib.pyplot as plt
 import argparse
 import sys
+import os
 
 
 def parse_arguments():
@@ -34,7 +35,17 @@ def load_and_rename_data(file_path):
     :return: pandas.DataFrame, DataFrame с колонками 'absolute_path' и 'relative_path'
     """
     try:
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Файл {file_path} не существует")
+
+        if not file_path.lower().endswith('.csv'):
+            print(f"Предупреждение: Файл {file_path} не имеет расширения .csv")
+
         df = pd.read_csv(file_path)
+
+        if len(df.columns) < 2:
+            raise ValueError("CSV файл должен содержать как минимум 2 колонки")
+
         df.columns = ['absolute_path', 'relative_path']
         print(f"Успешно загружено {len(df)} записей из {file_path}")
         return df
@@ -43,6 +54,12 @@ def load_and_rename_data(file_path):
         sys.exit(1)
     except Exception as e:
         print(f"Ошибка при чтении файла: {e}")
+        sys.exit(1)
+    except pd.errors.EmptyDataError:
+        print(f"Ошибка: Файл {file_path} пуст")
+        sys.exit(1)
+    except pd.errors.ParserError:
+        print(f"Ошибка: Неверный формат CSV файла {file_path}")
         sys.exit(1)
 
 
