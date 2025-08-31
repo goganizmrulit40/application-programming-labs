@@ -236,17 +236,24 @@ def plot_area_histogram(df):
     Создает и отображает гистограмму распределения площадей изображений
     :param df: pandas.DataFrame, DataFrame с колонкой 'area'
     """
-    plt.figure(figsize=(12, 8))
-    plt.hist(df['area'], bins=20, alpha=0.7, color='skyblue', edgecolor='black')
+    try:
+        if 'area' not in df.columns:
+            raise ValueError("DataFrame должен содержать колонку 'area'")
 
-    plt.title('Распределение площадей изображений', fontsize=16, fontweight='bold')
-    plt.xlabel('Площадь изображения (пиксели)', fontsize=12)
-    plt.ylabel('Количество изображений', fontsize=12)
+        plt.figure(figsize=(12, 8))
+        plt.hist(df['area'], bins=20, alpha=0.7, color='skyblue', edgecolor='black')
 
-    plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.3)
+        plt.title('Распределение площадей изображений', fontsize=16, fontweight='bold')
+        plt.xlabel('Площадь изображения (пиксели)', fontsize=12)
+        plt.ylabel('Количество изображений', fontsize=12)
 
-    plt.tight_layout()
-    plt.show()
+        plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.3)
+
+        plt.tight_layout()
+        plt.show()
+
+    except Exception as e:
+        print(f"Ошибка при построении гистограммы: {e}")
 
 
 def save_processed_data(df, output_file):
@@ -256,8 +263,17 @@ def save_processed_data(df, output_file):
     :param output_file: str, путь к выходному CSV файлу
     """
     try:
+        output_dir = os.path.dirname(output_file)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            print(f"Создана директория: {output_dir}")
+
+        if df.empty:
+            print("Предупреждение: Попытка сохранить пустой DataFrame")
+
         df.to_csv(output_file, index=False)
         print(f"Обработанные данные сохранены в файл: {output_file}")
+
     except Exception as e:
         print(f"Ошибка при сохранении файла: {e}")
 
