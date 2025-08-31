@@ -171,23 +171,28 @@ def filter_by_max_size(df, max_width, max_height):
     :return: pandas.DataFrame, отфильтрованный DataFrame с изображениями,
              удовлетворяющими условиям
     """
-    if 'width' not in df.columns or 'height' not in df.columns:
-        raise ValueError("DataFrame должен содержать колонки 'width' и 'height'")
+    try:
+        if 'width' not in df.columns or 'height' not in df.columns:
+            raise ValueError("DataFrame должен содержать колонки 'width' и 'height'")
 
-    if max_width <= 0 or max_height <= 0:
-        print("Предупреждение: Максимальные размеры должны быть положительными числами")
+        if max_width <= 0 or max_height <= 0:
+            print("Предупреждение: Максимальные размеры должны быть положительными числами")
+            return df
+
+        original_count = len(df)
+
+        mask = (df['width'] <= max_width) & (df['height'] <= max_height)
+        df_filtered = df[mask].copy()
+
+        df.drop(df.index, inplace=True)
+        df = pd.concat([df, df_filtered], ignore_index=True)
+
+        print(f"\nОтфильтровано изображений: {len(df)} из {original_count}")
         return df
 
-    original_count = len(df)
-
-    mask = (df['width'] <= max_width) & (df['height'] <= max_height)
-    df_filtered = df[mask].copy()
-
-    df.drop(df.index, inplace=True)
-    df = pd.concat([df, df_filtered], ignore_index=True)
-
-    print(f"\nОтфильтровано изображений: {len(df)} из {original_count}")
-    return df
+    except Exception as e:
+        print(f"Ошибка при фильтрации данных: {e}")
+        return df
 
 
 def add_area_column(df):
@@ -196,8 +201,17 @@ def add_area_column(df):
     :param df: pandas.DataFrame, DataFrame с колонками 'width' и 'height'
     :return: pandas.DataFrame, DataFrame с добавленной колонкой 'area'
     """
-    df['area'] = df['width'] * df['height']
-    return df
+    try:
+        if 'width' not in df.columns or 'height' not in df.columns:
+            raise ValueError("DataFrame должен содержать колонки 'width' и 'height'")
+
+        df['area'] = df['width'] * df['height']
+        return df
+
+    except Exception as e:
+        print(f"Ошибка при добавлении колонки площади: {e}")
+        df['area'] = None
+        return df
 
 
 def sort_by_area(df):
@@ -206,7 +220,15 @@ def sort_by_area(df):
     :param df: pandas.DataFrame, DataFrame с колонкой 'area'
     :return: pandas.DataFrame, отсортированный DataFrame
     """
-    return df.sort_values('area', ascending=True)
+    try:
+        if 'area' not in df.columns:
+            raise ValueError("DataFrame должен содержать колонку 'area'")
+
+        return df.sort_values('area', ascending=True)
+
+    except Exception as e:
+        print(f"Ошибка при сортировке данных: {e}")
+        return df
 
 
 def plot_area_histogram(df):
