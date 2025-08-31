@@ -116,25 +116,38 @@ def add_dimensions_columns(df):
                 модифицированный DataFrame
                 с колонками 'height', 'width', 'channels'
     """
-    dimensions = []
-    successful = 0
-    failed = 0
+    try:
+        if 'absolute_path' not in df.columns:
+            raise ValueError("DataFrame должен содержать колонку 'absolute_path'")
 
-    for abs_path in df['absolute_path']:
-        height, width, channels = get_image_dimensions(abs_path)
-        dimensions.append((height, width, channels))
+        dimensions = []
+        successful = 0
+        failed = 0
 
-        if height is not None and width is not None:
-            successful += 1
-        else:
-            failed += 1
+        for abs_path in df['absolute_path']:
+            try:
+                height, width, channels = get_image_dimensions(abs_path)
+                dimensions.append((height, width, channels))
 
-    df['height'] = [d[0] for d in dimensions]
-    df['width'] = [d[1] for d in dimensions]
-    df['channels'] = [d[2] for d in dimensions]
+                if height is not None and width is not None:
+                    successful += 1
+                else:
+                    failed += 1
+            except Exception as e:
+                print(f"Ошибка при обработке пути {abs_path}: {e}")
+                dimensions.append((None, None, None))
+                failed += 1
 
-    print(f"Успешно обработано изображений: {successful}, не удалось: {failed}")
-    return df
+        df['height'] = [d[0] for d in dimensions]
+        df['width'] = [d[1] for d in dimensions]
+        df['channels'] = [d[2] for d in dimensions]
+
+        print(f"Успешно обработано изображений: {successful}, не удалось: {failed}")
+        return df
+
+    except Exception as e:
+        print(f"Ошибка при добавлении колонок с размерами изображений: {e}")
+        return df
 
 
 def calculate_statistics(df):
