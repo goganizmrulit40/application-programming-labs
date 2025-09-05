@@ -51,3 +51,13 @@ class ImageViewerApp(QMainWindow):
         self.image_label.setStyleSheet("border: 1px solid gray; background-color: #f0f0f0;")
         main_layout.addWidget(self.image_label)
 
+        '''-------------------------------------------'''
+
+        nav_layout = QHBoxLayout()
+
+        self.next_btn = QPushButton("Следующее изображение")
+        self.next_btn.clicked.connect(self.show_next_image)
+        self.next_btn.setEnabled(False)
+        nav_layout.addWidget(self.next_btn)
+
+        main_layout.addLayout(nav_layout)
