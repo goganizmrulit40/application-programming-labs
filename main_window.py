@@ -10,7 +10,14 @@ from main import ImageIterator
 
 
 class ImageViewerApp(QMainWindow):
+    """
+    Главное окно приложения для просмотра датасета изображений.
+    """
     def __init__(self):
+        """
+        Инициализирует главное окно приложения (конструктор).
+        Создаёт временный объект, инициализируя QMainWindow
+        """
         super().__init__()
         self.setWindowTitle("Просмотр датасета изображений")
         self.setGeometry(100, 100, 800, 600)
@@ -23,6 +30,11 @@ class ImageViewerApp(QMainWindow):
 
 
     def init_ui(self):
+        """
+        Инициализирует пользовательский интерфейс.
+        Создаёт виджеты (кнопки, метки), настраивает их.
+        Также настраивает сам интерфейс
+        """
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
@@ -75,6 +87,10 @@ class ImageViewerApp(QMainWindow):
 
 
     def select_annotation_file(self):
+        """
+        Открывает диалог выбора файла аннотации.
+        Загружает выбранный CSV файл и инициализирует итератор
+        """
         file_path, _ = QFileDialog.getOpenFileName(
             self, "Выберите файл аннотации", "", "CSV Files (*.csv)"
         )
@@ -93,6 +109,10 @@ class ImageViewerApp(QMainWindow):
 
 
     def select_folder(self):
+        """
+        Открывает диалог выбора папки с изображениями.
+        Загружает выбранную папку и инициализирует итератор
+        """
         folder_path = QFileDialog.getExistingDirectory(
             self, "Выберите папку с изображениями"
         )
@@ -111,6 +131,10 @@ class ImageViewerApp(QMainWindow):
 
 
     def show_next_image(self):
+        """
+        Отображает следующее изображение из датасета.
+        Получает следующий путь к изображению из итератора и отображает его.
+        """
         if self.iterator:
             try:
                 image_path = next(self.iterator)
@@ -125,6 +149,12 @@ class ImageViewerApp(QMainWindow):
 
 
     def display_image(self, image_path):
+        """
+        Отображает изображение по указанному пути.
+        Обрабатывает относительные пути для файлов аннотации.
+        Масштабирует изображение для отображения.
+        :param image_path: str, путь к файлу изображения.
+        """
         try:
             if not os.path.isabs(image_path) and self.annotation_file:
                 annotation_dir = os.path.dirname(self.annotation_file)
@@ -155,4 +185,3 @@ if __name__ == "__main__":
     window = ImageViewerApp()
     window.show()
     sys.exit(app.exec_())
-
