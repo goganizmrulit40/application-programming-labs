@@ -141,8 +141,6 @@ class ImageViewerApp(QMainWindow):
                         Qt.SmoothTransformation
                     )
                     self.image_label.setPixmap(scaled_pixmap)
-                    self.info_label.setText(
-                        f"Изображение {self.iterator.current if self.iterator else 0}: {os.path.basename(image_path)}")
                 else:
                     self.image_label.setText("Не удалось загрузить изображение")
             else:
