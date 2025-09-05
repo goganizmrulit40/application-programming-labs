@@ -107,3 +107,16 @@ class ImageViewerApp(QMainWindow):
                 QMessageBox.critical(self, "Ошибка", f"Не удалось загрузить папку: {str(e)}")
 
 
+    def show_next_image(self):
+        if self.iterator:
+            try:
+                image_path = next(self.iterator)
+                self.display_image(image_path)
+
+            except StopIteration:
+                self.info_label.setText("Достигнут конец датасета")
+                self.next_btn.setEnabled(False)
+
+            except Exception as e:
+                QMessageBox.critical(self, "Ошибка", f"Не удалось загрузить изображение: {str(e)}")
+
