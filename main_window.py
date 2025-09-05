@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QMainWindow)
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
+QGroupBox, QHBoxLayout, QPushButton, QLabel)
 
 from main import ImageIterator
 
