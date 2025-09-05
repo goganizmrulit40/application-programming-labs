@@ -149,3 +149,11 @@ class ImageViewerApp(QMainWindow):
 
         except Exception as e:
             self.image_label.setText(f"Ошибка загрузки: {str(e)}")
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = ImageViewerApp()
+    window.show()
+    sys.exit(app.exec_())
+
