@@ -18,6 +18,7 @@ class ImageViewerApp(QMainWindow):
 
         self.init_ui()
 
+
     def init_ui(self):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -69,6 +70,7 @@ class ImageViewerApp(QMainWindow):
         self.info_label.setAlignment(Qt.AlignCenter)
         main_layout.addWidget(self.info_label)
 
+
     def select_annotation_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
             self, "Выберите файл аннотации", "", "CSV Files (*.csv)"
@@ -85,3 +87,23 @@ class ImageViewerApp(QMainWindow):
                 
             except Exception as e:
                 QMessageBox.critical(self, "Ошибка", f"Не удалось загрузить файл аннотации: {str(e)}")
+
+
+    def select_folder(self):
+        folder_path = QFileDialog.getExistingDirectory(
+            self, "Выберите папку с изображениями"
+        )
+
+        if folder_path:
+            try:
+                self.folder_path = folder_path
+                self.annotation_file = None
+                self.iterator = ImageIterator(folder_path=folder_path)
+                self.next_btn.setEnabled(True)
+                self.info_label.setText(f"Загружена папка: {os.path.basename(folder_path)}")
+                self.show_next_image()
+
+            except Exception as e:
+                QMessageBox.critical(self, "Ошибка", f"Не удалось загрузить папку: {str(e)}")
+
+
