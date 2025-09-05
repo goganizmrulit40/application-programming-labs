@@ -2,6 +2,8 @@ import sys
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                              QGroupBox, QHBoxLayout, QPushButton, QLabel,
                              QFileDialog, QMessageBox)
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 
 from main import ImageIterator
 
@@ -120,3 +122,30 @@ class ImageViewerApp(QMainWindow):
             except Exception as e:
                 QMessageBox.critical(self, "Ошибка", f"Не удалось загрузить изображение: {str(e)}")
 
+
+    def display_image(self, image_path):
+        try:
+            if not os.path.isabs(image_path) and self.annotation_file:
+                annotation_dir = os.path.dirname(self.annotation_file)
+                image_path = os.path.join(annotation_dir, image_path)
+
+            if os.path.exists(image_path):
+                pixmap = QPixmap(image_path)
+
+                if not pixmap.isNull():
+                    scaled_pixmap = pixmap.scaled(
+                        self.image_label.width() - 20,
+                        self.image_label.height() - 20,
+                        Qt.KeepAspectRatio,
+                        Qt.SmoothTransformation
+                    )
+                    self.image_label.setPixmap(scaled_pixmap)
+                    self.info_label.setText(
+                        f"Изображение {self.iterator.current if self.iterator else 0}: {os.path.basename(image_path)}")
+                else:
+                    self.image_label.setText("Не удалось загрузить изображение")
+            else:
+                self.image_label.setText(f"Файл не найден: {image_path}")
+
+        except Exception as e:
+            self.image_label.setText(f"Ошибка загрузки: {str(e)}")
