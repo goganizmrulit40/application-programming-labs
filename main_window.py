@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
-QGroupBox, QHBoxLayout, QPushButton, QLabel)
+                             QGroupBox, QHBoxLayout, QPushButton, QLabel,
+                             QFileDialog, QMessageBox)
 
 from main import ImageIterator
 
@@ -67,3 +68,20 @@ class ImageViewerApp(QMainWindow):
         self.info_label = QLabel("Готов к работе")
         self.info_label.setAlignment(Qt.AlignCenter)
         main_layout.addWidget(self.info_label)
+
+    def select_annotation_file(self):
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "Выберите файл аннотации", "", "CSV Files (*.csv)"
+        )
+
+        if file_path:
+            try:
+                self.annotation_file = file_path
+                self.folder_path = None
+                self.iterator = ImageIterator(annotation_file=file_path)
+                self.next_btn.setEnabled(True)
+                self.info_label.setText(f"Загружен файл аннотации: {os.path.basename(file_path)}")
+                self.show_next_image()
+                
+            except Exception as e:
+                QMessageBox.critical(self, "Ошибка", f"Не удалось загрузить файл аннотации: {str(e)}")
