@@ -13,3 +13,13 @@ class ImageViewerApp(QMainWindow):
         self.iterator = None
         self.annotation_file = None
         self.folder_path = None
+
+        self.init_ui()
+
+    def init_ui(self):
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+
+        main_layout = QVBoxLayout(central_widget)
+
+
