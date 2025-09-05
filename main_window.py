@@ -61,3 +61,9 @@ class ImageViewerApp(QMainWindow):
         nav_layout.addWidget(self.next_btn)
 
         main_layout.addLayout(nav_layout)
+
+        '''-------------------------------------------'''
+
+        self.info_label = QLabel("Готов к работе")
+        self.info_label.setAlignment(Qt.AlignCenter)
+        main_layout.addWidget(self.info_label)
