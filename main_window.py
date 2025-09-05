@@ -41,3 +41,12 @@ class ImageViewerApp(QMainWindow):
         source_group.setLayout(source_layout)
         main_layout.addWidget(source_group)
 
+        '''-------------------------------------------'''
+
+        self.image_label = QLabel()
+        self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setMinimumSize(400, 300)
+        self.image_label.setText("Выберите источник данных и нажмите 'Следующее изображение'")
+        self.image_label.setStyleSheet("border: 1px solid gray; background-color: #f0f0f0;")
+        main_layout.addWidget(self.image_label)
+
